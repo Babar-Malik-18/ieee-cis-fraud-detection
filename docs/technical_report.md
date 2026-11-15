@@ -1,10 +1,12 @@
 # University Laboratory Project Technical Report
 ## Full-Stack Machine Learning System for IEEE-CIS Fraud Detection with Model Explainability, Calibrated Risk Assessment, and Automated Prevention Recommendations
 
-**Author:** Senior Student / Machine Learning Engineer  
+**Author:** Babar Malik (232048@students.au.edu.pk)  
 **Course:** Full-Stack Machine Learning & CI/CD Laboratory  
 **Date:** November 2026  
-**Repository:** `ml_fullstack_fraud_detection`  
+**GitHub Profile:** [https://github.com/Babar-Malik-18](https://github.com/Babar-Malik-18)  
+**Repository:** [https://github.com/Babar-Malik-18/ieee-cis-fraud-detection](https://github.com/Babar-Malik-18/ieee-cis-fraud-detection)  
+**GitHub Pages URL:** [https://babar-malik-18.github.io/ieee-cis-fraud-detection/](https://babar-malik-18.github.io/ieee-cis-fraud-detection/)  
 
 ---
 

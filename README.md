@@ -1,7 +1,7 @@
 # IEEE-CIS Fraud Detection: AI-Powered Full-Stack ML & CI/CD Platform
 
-[![Continuous Integration](https://github.com/USER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/USER/REPO/actions/workflows/ci.yml)
-[![GitHub Pages Deployment](https://github.com/USER/REPO/actions/workflows/pages.yml/badge.svg)](https://github.com/USER/REPO/actions/workflows/pages.yml)
+[![Continuous Integration](https://github.com/Babar-Malik-18/ieee-cis-fraud-detection/actions/workflows/ci.yml/badge.svg)](https://github.com/Babar-Malik-18/ieee-cis-fraud-detection/actions/workflows/ci.yml)
+[![GitHub Pages Deployment](https://github.com/Babar-Malik-18/ieee-cis-fraud-detection/actions/workflows/pages.yml/badge.svg)](https://babar-malik-18.github.io/ieee-cis-fraud-detection/)
 [![Python Version](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
 [![Angular Version](https://img.shields.io/badge/Angular-22-dd0031.svg)](https://angular.dev/)
 [![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.6+-orange.svg)](https://scikit-learn.org/)
