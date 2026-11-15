@@ -44,11 +44,14 @@ export class App implements OnInit, OnDestroy {
   errorMessage: string | null = null;
   predictionResult: PredictionResponse | null = null;
   isDemoMode = false;
+  customBackendUrl = '';
+  showBackendConfig = false;
 
   // Track which preset was selected
   activePreset: 'authentic' | 'fraud' | 'default' = 'authentic';
 
   ngOnInit(): void {
+    this.customBackendUrl = this.predictionService.getBackendUrl();
     this.loadPreset('authentic');
     this.checkHealth();
 
@@ -88,6 +91,19 @@ export class App implements OnInit, OnDestroy {
         this.isDemoMode = true;
       }
     });
+  }
+
+  saveCustomBackendUrl(): void {
+    this.predictionService.setBackendUrl(this.customBackendUrl);
+    this.showBackendConfig = false;
+    this.checkHealth();
+  }
+
+  clearCustomBackendUrl(): void {
+    this.customBackendUrl = '';
+    this.predictionService.setBackendUrl('');
+    this.showBackendConfig = false;
+    this.checkHealth();
   }
 
   loadPreset(type: 'authentic' | 'fraud' | 'default'): void {

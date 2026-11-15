@@ -28,7 +28,21 @@
       the Flask Python backend running locally (<code>python backend/app.py</code> on <code>localhost:5000</code>) or
       hosted on a dedicated API server.
       <span *ngIf="isDemoMode" class="demo-tag">DEMO MODE ACTIVE</span>
+      <button type="button" (click)="showBackendConfig = !showBackendConfig" style="margin-left: 10px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; font-weight: 600;">
+        ⚙️ {{ showBackendConfig ? 'Close Settings' : 'Connect Cloud Backend URL' }}
+      </button>
     </div>
+  </div>
+
+  <!-- Live Cloud Backend Connection Bar -->
+  <div *ngIf="showBackendConfig" style="background: #ffffff; border: 1px solid #3b82f6; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(59, 130, 246, 0.1);">
+    <div style="font-size: 13px; font-weight: 700; color: #1e3a8a; margin-bottom: 6px;">Connect Hosted Cloud Backend (e.g. Render, Railway, Hugging Face)</div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <input type="text" [(ngModel)]="customBackendUrl" placeholder="https://your-backend-app.onrender.com" style="flex: 1; min-width: 260px; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px;">
+      <button type="button" (click)="saveCustomBackendUrl()" style="background: #2563eb; color: #ffffff; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">Connect & Save</button>
+      <button type="button" (click)="clearCustomBackendUrl()" style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">Reset to Local (/api)</button>
+    </div>
+    <small style="color: #64748b; font-size: 11px; margin-top: 4px; display: block;">Once connected, all prediction and health requests will route to your live HTTPS cloud API directly.</small>
   </div>
 
   <!-- Main Content Grid -->

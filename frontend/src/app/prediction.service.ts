@@ -23,7 +23,26 @@ export interface HealthResponse {
 })
 export class PredictionService {
   private http = inject(HttpClient);
-  private apiUrl = '/api';
+  private customBackendUrl = typeof window !== 'undefined' ? (localStorage.getItem('CUSTOM_BACKEND_URL') || '') : '';
+
+  get apiUrl(): string {
+    return this.customBackendUrl ? this.customBackendUrl.replace(/\/+$/, '') : '/api';
+  }
+
+  getBackendUrl(): string {
+    return this.customBackendUrl;
+  }
+
+  setBackendUrl(url: string): void {
+    this.customBackendUrl = url ? url.trim() : '';
+    if (typeof window !== 'undefined') {
+      if (this.customBackendUrl) {
+        localStorage.setItem('CUSTOM_BACKEND_URL', this.customBackendUrl);
+      } else {
+        localStorage.removeItem('CUSTOM_BACKEND_URL');
+      }
+    }
+  }
 
   /**
    * Check Flask backend health.
