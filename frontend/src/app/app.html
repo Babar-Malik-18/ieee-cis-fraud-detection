@@ -3,15 +3,17 @@
   <header class="app-header">
     <div class="header-content">
       <div class="header-titles">
-        <div class="badge-title">UNIVERSITY FULL-STACK ML + CI/CD PROJECT</div>
+        <div class="badge-title">UNIVERSITY FULL-STACK ML + CI/CD PROJECT - Babar Malik 232048</div>
         <h1>IEEE-CIS Fraud Detection Platform</h1>
         <p class="subtitle">AI-Powered Transaction Risk Analysis, Model Explainability & Prevention Engine</p>
       </div>
       <div class="header-status">
-        <span class="status-pill" [class.status-online]="backendOnline" [class.status-offline]="!backendOnline" (click)="checkHealth()" style="cursor: pointer;" title="Click to refresh connection">
+        <span class="status-pill" [class.status-online]="backendOnline" [class.status-offline]="!backendOnline"
+          (click)="checkHealth()" style="cursor: pointer;" title="Click to refresh connection">
           <span class="status-dot"></span>
           {{ backendMessage }}
-          <span *ngIf="!backendOnline && !backendChecking" style="font-size: 11px; text-decoration: underline; margin-left: 4px;">↻ retry</span>
+          <span *ngIf="!backendOnline && !backendChecking"
+            style="font-size: 11px; text-decoration: underline; margin-left: 4px;">↻ retry</span>
         </span>
       </div>
     </div>
@@ -22,7 +24,9 @@
     <div class="alert-icon">ℹ️</div>
     <div class="alert-text">
       <strong>Public Deployment Architecture Notice:</strong>
-      This GitHub Pages static site delivers the client-side Angular dashboard. Live server-side ML inference requires the Flask Python backend running locally (<code>python backend/app.py</code> on <code>localhost:5000</code>) or hosted on a dedicated API server.
+      This GitHub Pages static site delivers the client-side Angular dashboard. Live server-side ML inference requires
+      the Flask Python backend running locally (<code>python backend/app.py</code> on <code>localhost:5000</code>) or
+      hosted on a dedicated API server.
       <span *ngIf="isDemoMode" class="demo-tag">DEMO MODE ACTIVE</span>
     </div>
   </div>
@@ -39,13 +43,16 @@
       <!-- Presets Selector -->
       <div class="presets-bar">
         <span class="preset-label">Quick Test Presets:</span>
-        <button type="button" class="btn-preset" [class.active]="activePreset === 'authentic'" (click)="loadPreset('authentic')">
+        <button type="button" class="btn-preset" [class.active]="activePreset === 'authentic'"
+          (click)="loadPreset('authentic')">
           🛡️ Authentic Sample
         </button>
-        <button type="button" class="btn-preset" [class.active]="activePreset === 'fraud'" (click)="loadPreset('fraud')">
+        <button type="button" class="btn-preset" [class.active]="activePreset === 'fraud'"
+          (click)="loadPreset('fraud')">
           🚨 High-Risk Fraud Sample
         </button>
-        <button type="button" class="btn-preset" [class.active]="activePreset === 'default'" (click)="loadPreset('default')">
+        <button type="button" class="btn-preset" [class.active]="activePreset === 'default'"
+          (click)="loadPreset('default')">
           ⚖️ Baseline Medians
         </button>
       </div>
@@ -79,13 +86,16 @@
           <div class="fields-grid">
             <div class="form-group highlight-group">
               <label for="transaction_amt">Transaction Amount ($ USD) *</label>
-              <input id="transaction_amt" type="number" step="0.01" min="0" [(ngModel)]="formData['transaction_amt']" (ngModelChange)="syncLogAmount()" name="transaction_amt" required class="form-control" placeholder="e.g. 150.00">
+              <input id="transaction_amt" type="number" step="0.01" min="0" [(ngModel)]="formData['transaction_amt']"
+                (ngModelChange)="syncLogAmount()" name="transaction_amt" required class="form-control"
+                placeholder="e.g. 150.00">
               <small class="field-hint">Monetary value of the transaction.</small>
             </div>
 
             <div class="form-group">
               <label for="log_amt">Log Amount (log_amt)</label>
-              <input id="log_amt" type="number" step="0.001" [(ngModel)]="formData['log_amt']" name="log_amt" class="form-control" readonly>
+              <input id="log_amt" type="number" step="0.001" [(ngModel)]="formData['log_amt']" name="log_amt"
+                class="form-control" readonly>
               <small class="field-hint">Calculated ln(1 + amount).</small>
             </div>
 
@@ -99,7 +109,8 @@
 
             <div class="form-group">
               <label for="is_high_risk_product">High Risk Product Flag</label>
-              <select id="is_high_risk_product" [(ngModel)]="formData['is_high_risk_product']" name="is_high_risk_product" class="form-control">
+              <select id="is_high_risk_product" [(ngModel)]="formData['is_high_risk_product']"
+                name="is_high_risk_product" class="form-control">
                 <option [ngValue]="0">0 - Standard Risk</option>
                 <option [ngValue]="1">1 - High Risk Product Category</option>
               </select>
@@ -137,12 +148,14 @@
 
             <div class="form-group">
               <label for="hour_of_day">Hour of Day (0-23 UTC)</label>
-              <input id="hour_of_day" type="number" min="0" max="23" [(ngModel)]="formData['hour_of_day']" name="hour_of_day" class="form-control">
+              <input id="hour_of_day" type="number" min="0" max="23" [(ngModel)]="formData['hour_of_day']"
+                name="hour_of_day" class="form-control">
             </div>
 
             <div class="form-group">
               <label for="day_of_week">Day of Week (0-6)</label>
-              <input id="day_of_week" type="number" min="0" max="6" [(ngModel)]="formData['day_of_week']" name="day_of_week" class="form-control">
+              <input id="day_of_week" type="number" min="0" max="6" [(ngModel)]="formData['day_of_week']"
+                name="day_of_week" class="form-control">
             </div>
 
             <div class="form-group">
@@ -160,14 +173,16 @@
           <div class="fields-grid">
             <div class="form-group">
               <label for="purchaser_email_domain">Purchaser Email Domain</label>
-              <select id="purchaser_email_domain" [(ngModel)]="formData['purchaser_email_domain']" name="purchaser_email_domain" class="form-control">
+              <select id="purchaser_email_domain" [(ngModel)]="formData['purchaser_email_domain']"
+                name="purchaser_email_domain" class="form-control">
                 <option *ngFor="let opt of categories['purchaser_email_domain']" [value]="opt">{{ opt }}</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="recipient_email_domain">Recipient Email Domain</label>
-              <select id="recipient_email_domain" [(ngModel)]="formData['recipient_email_domain']" name="recipient_email_domain" class="form-control">
+              <select id="recipient_email_domain" [(ngModel)]="formData['recipient_email_domain']"
+                name="recipient_email_domain" class="form-control">
                 <option *ngFor="let opt of categories['recipient_email_domain']" [value]="opt">{{ opt }}</option>
               </select>
             </div>
@@ -181,12 +196,14 @@
 
             <div class="form-group">
               <label for="dist1">Distance Metric 1 (dist1)</label>
-              <input id="dist1" type="number" step="0.1" [(ngModel)]="formData['dist1']" name="dist1" class="form-control">
+              <input id="dist1" type="number" step="0.1" [(ngModel)]="formData['dist1']" name="dist1"
+                class="form-control">
             </div>
 
             <div class="form-group">
               <label for="dist2">Distance Metric 2 (dist2)</label>
-              <input id="dist2" type="number" step="0.1" [(ngModel)]="formData['dist2']" name="dist2" class="form-control">
+              <input id="dist2" type="number" step="0.1" [(ngModel)]="formData['dist2']" name="dist2"
+                class="form-control">
             </div>
 
             <div class="form-group">
@@ -201,39 +218,48 @@
           <div class="fields-grid">
             <div class="form-group highlight-group">
               <label for="card1_historical_fraud_rate">Card Historical Fraud Rate *</label>
-              <input id="card1_historical_fraud_rate" type="number" step="0.001" min="0" max="1" [(ngModel)]="formData['card1_historical_fraud_rate']" name="card1_historical_fraud_rate" class="form-control">
+              <input id="card1_historical_fraud_rate" type="number" step="0.001" min="0" max="1"
+                [(ngModel)]="formData['card1_historical_fraud_rate']" name="card1_historical_fraud_rate"
+                class="form-control">
               <small class="field-hint">Key risk feature (0.0 to 1.0).</small>
             </div>
 
             <div class="form-group">
               <label for="card1_txn_count">Card Historical Txn Count</label>
-              <input id="card1_txn_count" type="number" [(ngModel)]="formData['card1_txn_count']" name="card1_txn_count" class="form-control">
+              <input id="card1_txn_count" type="number" [(ngModel)]="formData['card1_txn_count']" name="card1_txn_count"
+                class="form-control">
             </div>
 
             <div class="form-group">
               <label for="card1_avg_amt">Card Average Amount ($)</label>
-              <input id="card1_avg_amt" type="number" step="0.1" [(ngModel)]="formData['card1_avg_amt']" name="card1_avg_amt" class="form-control">
+              <input id="card1_avg_amt" type="number" step="0.1" [(ngModel)]="formData['card1_avg_amt']"
+                name="card1_avg_amt" class="form-control">
             </div>
 
             <div class="form-group">
               <label for="amt_vs_card_avg_ratio">Amount vs Card Avg Ratio</label>
-              <input id="amt_vs_card_avg_ratio" type="number" step="0.01" [(ngModel)]="formData['amt_vs_card_avg_ratio']" name="amt_vs_card_avg_ratio" class="form-control">
+              <input id="amt_vs_card_avg_ratio" type="number" step="0.01"
+                [(ngModel)]="formData['amt_vs_card_avg_ratio']" name="amt_vs_card_avg_ratio" class="form-control">
             </div>
 
             <div class="form-group">
               <label for="email_historical_fraud_rate">Email Historical Fraud Rate</label>
-              <input id="email_historical_fraud_rate" type="number" step="0.001" [(ngModel)]="formData['email_historical_fraud_rate']" name="email_historical_fraud_rate" class="form-control">
+              <input id="email_historical_fraud_rate" type="number" step="0.001"
+                [(ngModel)]="formData['email_historical_fraud_rate']" name="email_historical_fraud_rate"
+                class="form-control">
             </div>
 
             <div class="form-group">
               <label for="email_txn_count">Email Historical Txn Count</label>
-              <input id="email_txn_count" type="number" [(ngModel)]="formData['email_txn_count']" name="email_txn_count" class="form-control">
+              <input id="email_txn_count" type="number" [(ngModel)]="formData['email_txn_count']" name="email_txn_count"
+                class="form-control">
             </div>
 
             <!-- C Features Grid -->
             <div class="form-group" *ngFor="let num of [1,2,3,4,5,6,7,8,9,10,11,12,13,14]">
               <label [for]="'C' + num">Count Metric C{{ num }}</label>
-              <input [id]="'C' + num" type="number" [(ngModel)]="formData['C' + num]" [name]="'C' + num" class="form-control">
+              <input [id]="'C' + num" type="number" [(ngModel)]="formData['C' + num]" [name]="'C' + num"
+                class="form-control">
             </div>
           </div>
         </div>
@@ -243,7 +269,8 @@
           <div class="fields-grid">
             <div class="form-group" *ngFor="let num of [1,2,3,4,5,10,11,15]">
               <label [for]="'D' + num">Time Delta D{{ num }} (Days)</label>
-              <input [id]="'D' + num" type="number" step="0.1" [(ngModel)]="formData['D' + num]" [name]="'D' + num" class="form-control">
+              <input [id]="'D' + num" type="number" step="0.1" [(ngModel)]="formData['D' + num]" [name]="'D' + num"
+                class="form-control">
               <small class="field-hint">Elapsed time since previous event.</small>
             </div>
           </div>
@@ -254,7 +281,8 @@
           <div class="fields-grid">
             <div class="form-group" *ngFor="let num of [1,2,3,4,5,6,7,8,9]">
               <label [for]="'M' + num + '_enc'">Match Indicator M{{ num }}</label>
-              <input [id]="'M' + num + '_enc'" type="number" [(ngModel)]="formData['M' + num + '_enc']" [name]="'M' + num + '_enc'" class="form-control">
+              <input [id]="'M' + num + '_enc'" type="number" [(ngModel)]="formData['M' + num + '_enc']"
+                [name]="'M' + num + '_enc'" class="form-control">
               <small class="field-hint">Name/address matching verification flag.</small>
             </div>
           </div>
@@ -265,7 +293,8 @@
           <div class="fields-grid">
             <div class="form-group" *ngFor="let num of ['01','02','03','05','06','09','11','13','17','19','20']">
               <label [for]="'id_' + num">Security Metric id_{{ num }}</label>
-              <input [id]="'id_' + num" type="number" step="0.1" [(ngModel)]="formData['id_' + num]" [name]="'id_' + num" class="form-control">
+              <input [id]="'id_' + num" type="number" step="0.1" [(ngModel)]="formData['id_' + num]"
+                [name]="'id_' + num" class="form-control">
             </div>
           </div>
         </div>
@@ -288,7 +317,8 @@
     <!-- Right Column: Results & Explainability Panel -->
     <section class="card results-panel" *ngIf="predictionResult">
       <!-- Prediction Header -->
-      <div class="result-header" [class.result-fraud]="predictionResult.prediction === 'FRAUD'" [class.result-authentic]="predictionResult.prediction === 'AUTHENTIC'">
+      <div class="result-header" [class.result-fraud]="predictionResult.prediction === 'FRAUD'"
+        [class.result-authentic]="predictionResult.prediction === 'AUTHENTIC'">
         <div class="result-status-row">
           <div class="prediction-badge">
             <span class="badge-icon">{{ predictionResult.prediction === 'FRAUD' ? '🚨' : '🛡️' }}</span>
@@ -343,7 +373,8 @@
           <span class="novelty-tag">PROJECT NOVELTY</span>
           <h3>Recommended Preventive Actions</h3>
         </div>
-        <p class="section-subtext">Contextual security protocols triggered by the detected risk level and dominant factors:</p>
+        <p class="section-subtext">Contextual security protocols triggered by the detected risk level and dominant
+          factors:</p>
         <ul class="recommendations-list">
           <li *ngFor="let rec of predictionResult.recommendations" class="rec-item">
             <span class="rec-bullet">➔</span>
@@ -368,7 +399,8 @@
       <div class="empty-content">
         <div class="empty-icon">📊</div>
         <h3>Ready for Risk Analysis</h3>
-        <p>Select a quick preset above or customize the transaction parameters, then click <strong>"Analyze Transaction Risk"</strong> to compute:</p>
+        <p>Select a quick preset above or customize the transaction parameters, then click <strong>"Analyze Transaction
+            Risk"</strong> to compute:</p>
         <div class="features-list">
           <div class="feature-item">
             <span class="feat-icon">🎯</span>
