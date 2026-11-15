@@ -1,0 +1,392 @@
+<div class="dashboard-container">
+  <!-- Top Header -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="header-titles">
+        <div class="badge-title">UNIVERSITY FULL-STACK ML + CI/CD PROJECT</div>
+        <h1>IEEE-CIS Fraud Detection Platform</h1>
+        <p class="subtitle">AI-Powered Transaction Risk Analysis, Model Explainability & Prevention Engine</p>
+      </div>
+      <div class="header-status">
+        <span class="status-pill" [class.status-online]="backendOnline" [class.status-offline]="!backendOnline">
+          <span class="status-dot"></span>
+          {{ backendMessage }}
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Public GitHub Pages Static Deployment Disclosure Notice -->
+  <div class="alert-banner" [class.banner-demo]="isDemoMode">
+    <div class="alert-icon">ℹ️</div>
+    <div class="alert-text">
+      <strong>Public Deployment Architecture Notice:</strong>
+      This GitHub Pages static site delivers the client-side Angular dashboard. Live server-side ML inference requires the Flask Python backend running locally (<code>python backend/app.py</code> on <code>localhost:5000</code>) or hosted on a dedicated API server.
+      <span *ngIf="isDemoMode" class="demo-tag">DEMO MODE ACTIVE</span>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <main class="dashboard-grid">
+    <!-- Left Column: Input Form Panel -->
+    <section class="card input-panel">
+      <div class="card-header">
+        <h2>Transaction Information</h2>
+        <p class="section-desc">Evaluate transactions across 68 authoritative IEEE-CIS features.</p>
+      </div>
+
+      <!-- Presets Selector -->
+      <div class="presets-bar">
+        <span class="preset-label">Quick Test Presets:</span>
+        <button type="button" class="btn-preset" [class.active]="activePreset === 'authentic'" (click)="loadPreset('authentic')">
+          🛡️ Authentic Sample
+        </button>
+        <button type="button" class="btn-preset" [class.active]="activePreset === 'fraud'" (click)="loadPreset('fraud')">
+          🚨 High-Risk Fraud Sample
+        </button>
+        <button type="button" class="btn-preset" [class.active]="activePreset === 'default'" (click)="loadPreset('default')">
+          ⚖️ Baseline Medians
+        </button>
+      </div>
+
+      <!-- Section Tabs Navigation -->
+      <nav class="form-tabs">
+        <button type="button" class="tab-btn" [class.active]="activeTab === 'core'" (click)="setTab('core')">
+          💳 Core & Card
+        </button>
+        <button type="button" class="tab-btn" [class.active]="activeTab === 'identity'" (click)="setTab('identity')">
+          🌐 Digital Identity
+        </button>
+        <button type="button" class="tab-btn" [class.active]="activeTab === 'velocity'" (click)="setTab('velocity')">
+          📊 Behavioral & Counts
+        </button>
+        <button type="button" class="tab-btn" [class.active]="activeTab === 'timing'" (click)="setTab('timing')">
+          ⏱️ Deltas (D1-D15)
+        </button>
+        <button type="button" class="tab-btn" [class.active]="activeTab === 'match'" (click)="setTab('match')">
+          🔍 Matches (M1-M9)
+        </button>
+        <button type="button" class="tab-btn" [class.active]="activeTab === 'advanced'" (click)="setTab('advanced')">
+          🛡️ Telemetry (id_01-20)
+        </button>
+      </nav>
+
+      <!-- Form Body -->
+      <form class="feature-form" (ngSubmit)="analyzeTransaction()">
+        <!-- TAB 1: CORE & CARD ATTRIBUTES -->
+        <div class="tab-content" *ngIf="activeTab === 'core'">
+          <div class="fields-grid">
+            <div class="form-group highlight-group">
+              <label for="transaction_amt">Transaction Amount ($ USD) *</label>
+              <input id="transaction_amt" type="number" step="0.01" min="0" [(ngModel)]="formData['transaction_amt']" (ngModelChange)="syncLogAmount()" name="transaction_amt" required class="form-control" placeholder="e.g. 150.00">
+              <small class="field-hint">Monetary value of the transaction.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="log_amt">Log Amount (log_amt)</label>
+              <input id="log_amt" type="number" step="0.001" [(ngModel)]="formData['log_amt']" name="log_amt" class="form-control" readonly>
+              <small class="field-hint">Calculated ln(1 + amount).</small>
+            </div>
+
+            <div class="form-group">
+              <label for="product_cd">Product Code (product_cd) *</label>
+              <select id="product_cd" [(ngModel)]="formData['product_cd']" name="product_cd" class="form-control">
+                <option *ngFor="let opt of categories['product_cd']" [value]="opt">{{ opt }}</option>
+              </select>
+              <small class="field-hint">Service/product category code.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="is_high_risk_product">High Risk Product Flag</label>
+              <select id="is_high_risk_product" [(ngModel)]="formData['is_high_risk_product']" name="is_high_risk_product" class="form-control">
+                <option [ngValue]="0">0 - Standard Risk</option>
+                <option [ngValue]="1">1 - High Risk Product Category</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="card4">Card Network (card4)</label>
+              <select id="card4" [(ngModel)]="formData['card4']" name="card4" class="form-control">
+                <option *ngFor="let opt of categories['card4']" [value]="opt">{{ opt }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="card6">Card Type (card6)</label>
+              <select id="card6" [(ngModel)]="formData['card6']" name="card6" class="form-control">
+                <option *ngFor="let opt of categories['card6']" [value]="opt">{{ opt }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="card1">Card ID Hash (card1)</label>
+              <input id="card1" type="number" [(ngModel)]="formData['card1']" name="card1" class="form-control">
+              <small class="field-hint">Primary card identifier code.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="card2">Card Bank Code (card2)</label>
+              <input id="card2" type="number" [(ngModel)]="formData['card2']" name="card2" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="addr1">Billing Region Code (addr1)</label>
+              <input id="addr1" type="number" [(ngModel)]="formData['addr1']" name="addr1" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="hour_of_day">Hour of Day (0-23 UTC)</label>
+              <input id="hour_of_day" type="number" min="0" max="23" [(ngModel)]="formData['hour_of_day']" name="hour_of_day" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="day_of_week">Day of Week (0-6)</label>
+              <input id="day_of_week" type="number" min="0" max="6" [(ngModel)]="formData['day_of_week']" name="day_of_week" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="has_identity">Identity Attached</label>
+              <select id="has_identity" [(ngModel)]="formData['has_identity']" name="has_identity" class="form-control">
+                <option [ngValue]="0">0 - No Identity Record</option>
+                <option [ngValue]="1">1 - Identity Record Present</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: DIGITAL IDENTITY & DEVICE -->
+        <div class="tab-content" *ngIf="activeTab === 'identity'">
+          <div class="fields-grid">
+            <div class="form-group">
+              <label for="purchaser_email_domain">Purchaser Email Domain</label>
+              <select id="purchaser_email_domain" [(ngModel)]="formData['purchaser_email_domain']" name="purchaser_email_domain" class="form-control">
+                <option *ngFor="let opt of categories['purchaser_email_domain']" [value]="opt">{{ opt }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="recipient_email_domain">Recipient Email Domain</label>
+              <select id="recipient_email_domain" [(ngModel)]="formData['recipient_email_domain']" name="recipient_email_domain" class="form-control">
+                <option *ngFor="let opt of categories['recipient_email_domain']" [value]="opt">{{ opt }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="device_type">Device Type</label>
+              <select id="device_type" [(ngModel)]="formData['device_type']" name="device_type" class="form-control">
+                <option *ngFor="let opt of categories['device_type']" [value]="opt">{{ opt }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="dist1">Distance Metric 1 (dist1)</label>
+              <input id="dist1" type="number" step="0.1" [(ngModel)]="formData['dist1']" name="dist1" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="dist2">Distance Metric 2 (dist2)</label>
+              <input id="dist2" type="number" step="0.1" [(ngModel)]="formData['dist2']" name="dist2" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="addr2">Billing Country Code (addr2)</label>
+              <input id="addr2" type="number" [(ngModel)]="formData['addr2']" name="addr2" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: BEHAVIORAL AGGREGATES & VELOCITY -->
+        <div class="tab-content" *ngIf="activeTab === 'velocity'">
+          <div class="fields-grid">
+            <div class="form-group highlight-group">
+              <label for="card1_historical_fraud_rate">Card Historical Fraud Rate *</label>
+              <input id="card1_historical_fraud_rate" type="number" step="0.001" min="0" max="1" [(ngModel)]="formData['card1_historical_fraud_rate']" name="card1_historical_fraud_rate" class="form-control">
+              <small class="field-hint">Key risk feature (0.0 to 1.0).</small>
+            </div>
+
+            <div class="form-group">
+              <label for="card1_txn_count">Card Historical Txn Count</label>
+              <input id="card1_txn_count" type="number" [(ngModel)]="formData['card1_txn_count']" name="card1_txn_count" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="card1_avg_amt">Card Average Amount ($)</label>
+              <input id="card1_avg_amt" type="number" step="0.1" [(ngModel)]="formData['card1_avg_amt']" name="card1_avg_amt" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="amt_vs_card_avg_ratio">Amount vs Card Avg Ratio</label>
+              <input id="amt_vs_card_avg_ratio" type="number" step="0.01" [(ngModel)]="formData['amt_vs_card_avg_ratio']" name="amt_vs_card_avg_ratio" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="email_historical_fraud_rate">Email Historical Fraud Rate</label>
+              <input id="email_historical_fraud_rate" type="number" step="0.001" [(ngModel)]="formData['email_historical_fraud_rate']" name="email_historical_fraud_rate" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="email_txn_count">Email Historical Txn Count</label>
+              <input id="email_txn_count" type="number" [(ngModel)]="formData['email_txn_count']" name="email_txn_count" class="form-control">
+            </div>
+
+            <!-- C Features Grid -->
+            <div class="form-group" *ngFor="let num of [1,2,3,4,5,6,7,8,9,10,11,12,13,14]">
+              <label [for]="'C' + num">Count Metric C{{ num }}</label>
+              <input [id]="'C' + num" type="number" [(ngModel)]="formData['C' + num]" [name]="'C' + num" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: TIMING DELTAS -->
+        <div class="tab-content" *ngIf="activeTab === 'timing'">
+          <div class="fields-grid">
+            <div class="form-group" *ngFor="let num of [1,2,3,4,5,10,11,15]">
+              <label [for]="'D' + num">Time Delta D{{ num }} (Days)</label>
+              <input [id]="'D' + num" type="number" step="0.1" [(ngModel)]="formData['D' + num]" [name]="'D' + num" class="form-control">
+              <small class="field-hint">Elapsed time since previous event.</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: MATCH ATTRIBUTES -->
+        <div class="tab-content" *ngIf="activeTab === 'match'">
+          <div class="fields-grid">
+            <div class="form-group" *ngFor="let num of [1,2,3,4,5,6,7,8,9]">
+              <label [for]="'M' + num + '_enc'">Match Indicator M{{ num }}</label>
+              <input [id]="'M' + num + '_enc'" type="number" [(ngModel)]="formData['M' + num + '_enc']" [name]="'M' + num + '_enc'" class="form-control">
+              <small class="field-hint">Name/address matching verification flag.</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 6: TELEMETRY (id_01 - id_20) -->
+        <div class="tab-content" *ngIf="activeTab === 'advanced'">
+          <div class="fields-grid">
+            <div class="form-group" *ngFor="let num of ['01','02','03','05','06','09','11','13','17','19','20']">
+              <label [for]="'id_' + num">Security Metric id_{{ num }}</label>
+              <input [id]="'id_' + num" type="number" step="0.1" [(ngModel)]="formData['id_' + num]" [name]="'id_' + num" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Notification Banner -->
+        <div class="error-banner" *ngIf="errorMessage">
+          ⚠️ {{ errorMessage }}
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <button type="submit" class="btn-analyze" [disabled]="isLoading">
+            <span *ngIf="isLoading" class="spinner"></span>
+            {{ isLoading ? 'Analyzing Transaction...' : 'Analyze Transaction Risk' }}
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Right Column: Results & Explainability Panel -->
+    <section class="card results-panel" *ngIf="predictionResult">
+      <!-- Prediction Header -->
+      <div class="result-header" [class.result-fraud]="predictionResult.prediction === 'FRAUD'" [class.result-authentic]="predictionResult.prediction === 'AUTHENTIC'">
+        <div class="result-status-row">
+          <div class="prediction-badge">
+            <span class="badge-icon">{{ predictionResult.prediction === 'FRAUD' ? '🚨' : '🛡️' }}</span>
+            <span class="badge-text">{{ predictionResult.prediction }}</span>
+          </div>
+          <div class="risk-badge" [ngClass]="getRiskBadgeClass(predictionResult.risk_level)">
+            RISK: {{ predictionResult.risk_level }}
+          </div>
+        </div>
+        <p class="risk-summary-text">{{ predictionResult.risk_summary }}</p>
+      </div>
+
+      <!-- Probability Gauges -->
+      <div class="probability-section">
+        <h3>Model Probability Distribution</h3>
+        <div class="meter-container">
+          <div class="meter-labels">
+            <span>Fraud Probability: <strong>{{ predictionResult.fraud_probability_percent }}</strong></span>
+            <span>Authentic: <strong>{{ predictionResult.authentic_probability_percent }}</strong></span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill fraud-fill" [style.width]="predictionResult.fraud_probability_percent"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Model Explainability Section -->
+      <div class="explanation-section">
+        <h3>Why did the model make this prediction?</h3>
+        <p class="section-subtext">Tree-level local feature contributions (Saabas attribution method):</p>
+
+        <div class="explanation-list">
+          <div class="explanation-card" *ngFor="let item of predictionResult.explanation">
+            <div class="exp-header">
+              <span class="exp-feature"><code>{{ item.feature }}</code></span>
+              <span class="exp-impact" [ngClass]="getImpactClass(item.impact)">
+                {{ item.impact === 'increases_risk' ? '▲ Increases Fraud Risk' : '▼ Decreases Risk (Protective)' }}
+              </span>
+            </div>
+            <div class="exp-details">
+              <span>Contribution: <strong>{{ item.contribution > 0 ? '+' : '' }}{{ item.contribution }}</strong></span>
+              <span>Value: <strong>{{ item.value }}</strong></span>
+            </div>
+            <div class="exp-desc">{{ item.description }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Novelty: Recommended Preventive Actions -->
+      <div class="prevention-section">
+        <div class="prevention-header">
+          <span class="novelty-tag">PROJECT NOVELTY</span>
+          <h3>Recommended Preventive Actions</h3>
+        </div>
+        <p class="section-subtext">Contextual security protocols triggered by the detected risk level and dominant factors:</p>
+        <ul class="recommendations-list">
+          <li *ngFor="let rec of predictionResult.recommendations" class="rec-item">
+            <span class="rec-bullet">➔</span>
+            <span class="rec-text">{{ rec }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Model Details Card -->
+      <div class="metadata-footer">
+        <small>
+          <strong>Model:</strong> {{ predictionResult.metadata.model }} |
+          <strong>Algorithm:</strong> {{ predictionResult.metadata.algorithm }} |
+          <strong>Evaluated Features:</strong> {{ predictionResult.metadata.total_features }}
+        </small>
+        <div class="disclaimer-note">{{ predictionResult.metadata.disclaimer }}</div>
+      </div>
+    </section>
+
+    <!-- Empty State / Guide Panel when no prediction yet -->
+    <section class="card empty-panel" *ngIf="!predictionResult">
+      <div class="empty-content">
+        <div class="empty-icon">📊</div>
+        <h3>Ready for Risk Analysis</h3>
+        <p>Select a quick preset above or customize the transaction parameters, then click <strong>"Analyze Transaction Risk"</strong> to compute:</p>
+        <div class="features-list">
+          <div class="feature-item">
+            <span class="feat-icon">🎯</span>
+            <strong>Binary Prediction:</strong> FRAUD vs AUTHENTIC
+          </div>
+          <div class="feature-item">
+            <span class="feat-icon">📈</span>
+            <strong>Calibrated Probabilities:</strong> Statistical model confidence
+          </div>
+          <div class="feature-item">
+            <span class="feat-icon">🔍</span>
+            <strong>Tree Explainability:</strong> Local feature contribution factors
+          </div>
+          <div class="feature-item">
+            <span class="feat-icon">🛡️</span>
+            <strong>Prevention Guidance:</strong> Automated action recommendations
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
