@@ -7,7 +7,7 @@
 
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of, map, throwError } from 'rxjs';
+import { Observable, catchError, of, map, throwError, timeout } from 'rxjs';
 import { PredictionResponse, RiskLevel, ExplanationItem } from './feature-schema';
 
 export interface HealthResponse {
@@ -30,6 +30,7 @@ export class PredictionService {
    */
   checkHealth(): Observable<HealthResponse> {
     return this.http.get<HealthResponse>(`${this.apiUrl}/health`).pipe(
+      timeout(3500),
       catchError(err => {
         return of({
           status: 'offline',

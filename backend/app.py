@@ -333,5 +333,5 @@ def internal_error(e):
 
 
 if __name__ == "__main__":
-    # Local development server on port 5000
-    app.run(host="127.0.0.1", port=5000, debug=False)
+    # Local development server on port 5000 (bind to 0.0.0.0 for localhost & 127.0.0.1 compatibility)
+    app.run(host="0.0.0.0", port=5000, debug=False)

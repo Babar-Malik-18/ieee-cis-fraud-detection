@@ -8,9 +8,10 @@
         <p class="subtitle">AI-Powered Transaction Risk Analysis, Model Explainability & Prevention Engine</p>
       </div>
       <div class="header-status">
-        <span class="status-pill" [class.status-online]="backendOnline" [class.status-offline]="!backendOnline">
+        <span class="status-pill" [class.status-online]="backendOnline" [class.status-offline]="!backendOnline" (click)="checkHealth()" style="cursor: pointer;" title="Click to refresh connection">
           <span class="status-dot"></span>
           {{ backendMessage }}
+          <span *ngIf="!backendOnline && !backendChecking" style="font-size: 11px; text-decoration: underline; margin-left: 4px;">↻ retry</span>
         </span>
       </div>
     </div>

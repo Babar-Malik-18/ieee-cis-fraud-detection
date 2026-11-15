@@ -3,7 +3,7 @@
  * Main Angular Component for IEEE-CIS Fraud Detection UI Dashboard
  */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PredictionService } from './prediction.service';
@@ -23,8 +23,9 @@ import {
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
-export class App implements OnInit {
+export class App implements OnInit, OnDestroy {
   private predictionService = inject(PredictionService);
+  private pollTimer: any = null;
 
   // Active form section tab
   activeTab: 'core' | 'card' | 'identity' | 'velocity' | 'timing' | 'match' | 'advanced' = 'core';
@@ -50,6 +51,19 @@ export class App implements OnInit {
   ngOnInit(): void {
     this.loadPreset('authentic');
     this.checkHealth();
+
+    // Auto-poll every 3 seconds to immediately detect Flask once started
+    this.pollTimer = setInterval(() => {
+      if (!this.backendOnline) {
+        this.checkHealth();
+      }
+    }, 3000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.pollTimer) {
+      clearInterval(this.pollTimer);
+    }
   }
 
   checkHealth(): void {
