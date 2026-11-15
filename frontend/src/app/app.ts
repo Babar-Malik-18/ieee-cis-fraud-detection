@@ -100,8 +100,8 @@ export class App implements OnInit, OnDestroy {
   }
 
   clearCustomBackendUrl(): void {
-    this.customBackendUrl = '';
     this.predictionService.setBackendUrl('');
+    this.customBackendUrl = this.predictionService.getBackendUrl();
     this.showBackendConfig = false;
     this.checkHealth();
   }

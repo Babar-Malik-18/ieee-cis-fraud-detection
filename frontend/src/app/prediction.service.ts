@@ -10,6 +10,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, of, map, throwError, timeout } from 'rxjs';
 import { PredictionResponse, RiskLevel, ExplanationItem } from './feature-schema';
 
+export const DEFAULT_PROD_BACKEND_URL = 'https://ieee-cis-fraud-detection-api.onrender.com';
+
 export interface HealthResponse {
   status: string;
   service: string;
@@ -25,12 +27,39 @@ export class PredictionService {
   private http = inject(HttpClient);
   private customBackendUrl = typeof window !== 'undefined' ? (localStorage.getItem('CUSTOM_BACKEND_URL') || '') : '';
 
+  /**
+   * Resolves the active API base URL.
+   * Priority:
+   * 1. Explicit user override stored in localStorage
+   * 2. Production host (e.g. babar-malik-18.github.io) -> DEFAULT_PROD_BACKEND_URL
+   * 3. Localhost / 127.0.0.1 -> '/api' (proxied by Angular dev server to localhost:5000)
+   */
   get apiUrl(): string {
-    return this.customBackendUrl ? this.customBackendUrl.replace(/\/+$/, '') : '/api';
+    if (this.customBackendUrl) {
+      return this.customBackendUrl.replace(/\/+$/, '');
+    }
+
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+        return DEFAULT_PROD_BACKEND_URL;
+      }
+    }
+
+    return '/api';
   }
 
   getBackendUrl(): string {
-    return this.customBackendUrl;
+    if (this.customBackendUrl) {
+      return this.customBackendUrl;
+    }
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+        return DEFAULT_PROD_BACKEND_URL;
+      }
+    }
+    return '';
   }
 
   setBackendUrl(url: string): void {
